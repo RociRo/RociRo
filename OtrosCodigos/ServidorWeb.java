@@ -7,7 +7,7 @@ public class ServidorWeb {
             System.out.println("Servidor web iniciado en el puerto 90");
             try {
                 // Crea el socket del servidor inicial
-                s = new ServerSocket(90);
+                s = new ServerSocket(9090);
             } catch ( Exception e ) {
             System.out.println("Error: " + e );
             return;
