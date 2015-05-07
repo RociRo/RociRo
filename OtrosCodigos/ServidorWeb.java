@@ -7,7 +7,7 @@ public class ServidorWeb {
             System.out.println("Servidor web iniciado en el puerto 90");
             try {
                 // Crea el socket del servidor inicial
-                s = new ServerSocket(9090);
+                s = new ServerSocket(5000);
             } catch ( Exception e ) {
             System.out.println("Error: " + e );
             return;
@@ -39,7 +39,21 @@ public class ServidorWeb {
                     }
 			    //out.println(linea);						            				
 		}while ( !linea.equals("") );
-				
+		//Ahora este va actuar como cliente
+                String servidor = "148.226.81.117";//Se indica la dirección IP del servidor
+                try {    
+                    Socket socket= new Socket (servidor,5000);// Se hace la conexión al servidor
+                    //para enviar el server
+                    PrintWriter cadenaServer = new PrintWriter(socket.getOutputStream(),true);
+                    //Para recuperar la respuesta del server
+                    DataInputStream	datoEntrada = new DataInputStream(socket.getInputStream());
+                    cadenaServer.println(host);
+                    
+                    datoEntrada.readUTF();
+                } catch ( Exception e ) {
+                        System.out.println("Error: " + e );
+                }   
+            
                 System.out.println("------------"+host);				
                 out.println("HTTP/1.0 200 OK");
                 out.println("Content-Type: text/html");
