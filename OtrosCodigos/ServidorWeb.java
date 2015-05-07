@@ -25,15 +25,22 @@ public class ServidorWeb {
                 // para de leer hasta que lee el fin de linea, es decir la linea en blanco
                 // la linea en blaco es la señal de fin de las cabeceras HTTP
                 String linea=".";
+		String host = "";
                 //System.out.println(linea);		
 				//linea = in.readLine();
    				// Manda la respuesta
                 // Manda las cabeceras
-				do {
-				linea = in.readLine();//Recupera lo que envío el cliente
-   				System.out.println("El usuario tecleo: " + linea);
+		do {
+                    linea = in.readLine();//Recupera lo que envío el cliente
+                    System.out.println("El usuario tecleo: " + linea);
+                    if  (linea.length()>7) {
+     			if ((linea.substring(0, 4)).equals("Host") )
+                             host = linea.substring(6, linea.length());
+                    }
 			    //out.println(linea);						            				
-				}while ( !linea.equals("") );
+		}while ( !linea.equals("") );
+				
+                System.out.println("------------"+host);				
                 out.println("HTTP/1.0 200 OK");
                 out.println("Content-Type: text/html");
                 // esta línea en blanco indica el final de las cabeceras
