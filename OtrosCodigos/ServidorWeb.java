@@ -1,14 +1,14 @@
 import java.net.*;
 import java.io.*;
 public class ServidorWeb {
-public static String getContenidoHTML(String host) throws IOException {
+	public static String getContenidoHTML(String host) throws IOException {
 	    URL url = new URL(host);
 	    URLConnection uc = url.openConnection();
 	    uc.connect();
 	    
 	    //Creamos el objeto con el que vamos a leer
 	    BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-	    String inputLine;
+	    String inputLine = ".";
 	    String contenido = "";
 	      
 	    while ((inputLine = in.readLine()) != null) {
