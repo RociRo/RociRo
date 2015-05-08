@@ -1,8 +1,7 @@
 import java.net.*;
 import java.io.*;
-public class servidorWeb {
-	
-	public static String getContenidoHTML(String host) throws IOException {
+public class ServidorWeb {
+public static String getContenidoHTML(String host) throws IOException {
 	    URL url = new URL(host);
 	    URLConnection uc = url.openConnection();
 	    uc.connect();
@@ -18,11 +17,8 @@ public class servidorWeb {
 	    in.close();
 	    return contenido;
 	}
-	
     public static void main(String args[])
     {
-    	
-    	
             ServerSocket s;
             System.out.println("Servidor web iniciado en el puerto 5000");
             try {
@@ -55,57 +51,37 @@ public class servidorWeb {
                     System.out.println("El usuario tecleo: " + linea);
                     if  (linea.length()>7) {
      			if ((linea.substring(0, 3)).equals("GET") )
-                             host = linea.substring(4, linea.length()-9);
+                             host = linea.substring(4, linea.length()-10);
                     }
-			  
-                System.out.println("esto se mando al servidor: " + host);
-              
-                out.println(getContenidoHTML(host));
-                    //out.println(linea);						            
-//			    URL urlObject;
-//			    String codigo;
-//			    try{urlObject = new URL(host);
-//			    InputStreamReader isr = new InputStreamReader(urlObject.openStream());
-//			    BufferedReader br = new BufferedReader(isr);
-//			    while((codigo = br.readLine())!= null){
-//			    	out.println(codigo);
-//			    	br.close();
-//			    	
-//			    }
-//			    	
-//			    }catch(MalformedURLException e){
-//			    	e.printStackTrace();
-//			    }catch(IOException e){
-//			    	e.printStackTrace();
-//			    }
+			    //out.println(linea);						            				
 		}while ( !linea.equals("") );
-		
 		//Ahora este va actuar como cliente
                 
-//                String servidor = "148.226.81.117";//Se indica la dirección IP del servidor
-//                try {    
-//                    Socket socket= new Socket (servidor,5000);// Se hace la conexión al servidor
-//                    //para enviar el server
-//                    PrintWriter cadenaServer = new PrintWriter(socket.getOutputStream(),true);
-//                    //Para recuperar la respuesta del server
-//                    DataInputStream	datoEntrada = new DataInputStream(socket.getInputStream());
-//                    cadenaServer.println(host);
-//                    
-//                    datoEntrada.readUTF();
-//                } catch ( Exception e ) {
-//                        System.out.println("Error: " + e );
-//                }   
-//                
-//                System.out.println("------------"+host);				
-//                out.println("HTTP/1.0 200 OK");
-//                out.println("Content-Type: text/html");
-//                // esta línea en blanco indica el final de las cabeceras
-//                out.println("");
-//                // Mandamos la pagina HTML
-//                out.println( "<H1>Hola</H2>");
-//                out.println( "<p>Probando</p>");
-//                out.flush(); //envía los datos
-				
+                /*String servidor = "148.226.81.117";//Se indica la dirección IP del servidor
+                try {    
+                    Socket socket= new Socket (servidor,5000);// Se hace la conexión al servidor
+                    //para enviar el server
+                    PrintWriter cadenaServer = new PrintWriter(socket.getOutputStream(),true);
+                    //Para recuperar la respuesta del server
+                    DataInputStream	datoEntrada = new DataInputStream(socket.getInputStream());
+                    cadenaServer.println(host);
+                    
+                    datoEntrada.readUTF();
+                } catch ( Exception e ) {
+                        System.out.println("Error: " + e );
+                } */  
+            
+                /*System.out.println("------------"+host);				
+                out.println("HTTP/1.0 200 OK");
+                out.println("Content-Type: text/html");
+                // esta línea en blanco indica el final de las cabeceras
+                out.println("");
+                // Mandamos la pagina HTML
+                out.println( "<H1>Hola</H2>");
+                out.println( "<p>Probando</p>");
+                out.flush(); //envía los datos
+				*/
+				out.println(getContenidoHTML(host));
                 remote.close();
             } catch ( Exception e ) {
                 System.out.println("Error: " + e );
