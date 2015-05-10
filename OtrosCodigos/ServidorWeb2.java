@@ -3,58 +3,48 @@ import java.io.*;
 public class ServidorWeb2 {
     public static void main(String args[])
     {
-            ServerSocket s2;
-            System.out.println("Servidor web 2 iniciado en el puerto 5100");
-            try {
-                // Crea el socket del servidor inicial
-                s2 = new ServerSocket(5100);
-            } catch ( Exception e ) {
-            System.out.println("Error: " + e );
-            return;
+    	
+        ServerSocket s2;
+        System.out.println("Servidor web 2 iniciado en el puerto 5100");
+        try {
+             // Crea el socket del servidor inicial, escuchara en ese puerto
+             s2 = new ServerSocket(5100);
+        } catch ( Exception e ) {
+          	System.out.println("Error: " + e );
+           	return;
         }
         System.out.println("Esperando Conexiones");
         while ( true ) {
             try {
-                // espera por una conexion del servidor 1
+                // espera por una conexion del servidor 1 para enviar y recibir
+            	// se acepta la conexiÛn
                 Socket cli_servidor1 = s2.accept();
-                String cadenaPagina;
-                // se acepta la conexion
-                System.out.println("Conexion, enviando datos.");
+                System.out.println("ConexiÛn, enviando y recibiendo datos.");
                 BufferedReader en_servidor1 = new BufferedReader( new InputStreamReader(cli_servidor1.getInputStream()) );
-                PrintWriter sal_servidor1 = new PrintWriter(cli_servidor1.getOutputStream());
+                //PrintWriter sal_servidor1 = new PrintWriter(cli_servidor1.getOutputStream());
                 //Para enviar respuestas al cliente
-   		//DataOutputStream sal_servidor1 = new DataOutputStream(cli_servidor1.getOutputStream());
-                // leer los datos enviados,
-                // para de leer hasta que lee el fin de linea, es decir la linea en blanco
-                // la linea en blanco es la se√±al de fin de las cabeceras HTTP
-                String linea;
+   				DataOutputStream sal_servidor1 = new DataOutputStream(cli_servidor1.getOutputStream());
+   				String linea;
                 linea = ".";
-                //System.out.println(" l√≠nea es: " + linea);
-				//if ((linea = en_servidor1.readLine()) != null)
-				  //  System.out.println(" l√≠nea es null: " + linea);   
-                //while ((linea = en_servidor1.readLine()) != null) {	
-                //do {
-                    linea = en_servidor1.readLine();//Recupera lo que env√≠o el cliente
-                    System.out.println("El servidor env√≠a: " + linea);
-                    System.out.println("El servidor env√≠a............");
-                    System.out.println("uno dos");                
-                //}while (!(linea.trim().equals("")));    
+                do {
+                    linea = en_servidor1.readLine();//Recupera lo que envÌo el cliente
+                    System.out.println("El servidor envÌa: " + linea);
+                    System.out.println("El servidor envÌa............");
+                    System.out.println("uno dos");
+                    sal_servidor1.writeUTF("Hola mundo :) desde sockets.");
+                }while (linea.length()!=0);    
 				//} while ((linea = en_servidor1.readLine()) != null);
-                //sal_servidor1.writeUTF("Hola mundo :) desde sockets");
-                    sal_servidor1.println("Hola mundo :) desde sockets");
-                    if (linea.trim().equals(null))
-                            return;
-                //sal_servidor1.flush();
-                
-                
-   		
+                sal_servidor1.writeUTF("Hola mundo :) desde sockets");
+                //    sal_servidor1.println("Hola mundo :) desde sockets");
+                if (linea.trim().equals(null))
+                    return;
                 /*DataOutputStream salida = new DataOutputStream(cli_servidor1.getOutputStream());                
                 try {    
-                    Socket socket= new Socket (en_servidor1.readLine(),80);//Me conecto a la p√°gina que haya enviado por el puerto 80
+                    Socket socket= new Socket (en_servidor1.readLine(),80);//Me conecto a la p·gina que haya enviado por el puerto 80
                     //Para recuperar la respuesta del server
                     DataInputStream	out2 = new DataInputStream(socket.getInputStream());
                     do {
-                        cadenaPagina = out2.readUTF();//Recupera lo que env√≠o el cliente
+                        cadenaPagina = out2.readUTF();//Recupera lo que envÌo el cliente
                         System.out.println("Leer: " + cadenaPagina);
                         salida.writeUTF(cadenaPagina);
 			    //out.println(linea);						            				
@@ -62,11 +52,12 @@ public class ServidorWeb2 {
                 } catch ( Exception e ) {
                         System.out.println("Error: " + e );
                 }*/
-                en_servidor1.close();// Se cierra la conexi√≥n remota
+                en_servidor1.close();// Se cierra la conexiÛn remota
                 cli_servidor1.close();
+                sal_servidor1.close();// 
             } catch ( Exception e ) {
                 System.out.println("Error: " + e );
             }
-        }
+        }//While
     }
 }
