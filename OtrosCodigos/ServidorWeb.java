@@ -22,51 +22,51 @@ public class ServidorWeb {
                 
     public static void main(String args[])
     {
-            ServerSocket s;
-            System.out.println("Servidor web 1 iniciado en el puerto 5000");
-            try {
-                // Crea el socket del servidor inicial
-                s = new ServerSocket(5000);
-            } catch ( Exception e ) {
+        ServerSocket s;
+        System.out.println("Servidor web 1 iniciado en el puerto 5000");
+        try {
+             // Crea el socket del servidor inicial
+             s = new ServerSocket(5000);
+        } catch ( Exception e ) {
             System.out.println("Error: " + e );
             return;
-            }
+        }
         System.out.println("Esperando Conexiones");
         while ( true ) {
             try {
                 // espera por una conexion
-                Socket cli_navegador = s.accept();//acepta la conexi√≥n del navegador
+                Socket cli_navegador = s.accept();//acepta la conexiÛn del navegador
                 // se acepta la conexion
                 System.out.println("Conexion, enviando datos.");
-                //Lee la petici√≥n del navegador
+                //Lee la peticiÛn del navegador
                 BufferedReader en_navegador = new BufferedReader( new InputStreamReader(cli_navegador.getInputStream()) );
                 //Para mandarle respuesta al navegador
                 PrintWriter sal_naegador = new PrintWriter(cli_navegador.getOutputStream());
                 // leer los datos enviados,
                 // para de leer hasta que lee el fin de linea, es decir la linea en blanco
-                // la linea en blaco es la se√±al de fin de las cabeceras HTTP
+                // la linea en blaco es la seÒal de fin de las cabeceras HTTP
                 String linea=".";
-		String host = "";
-		do {
-                    linea = en_navegador.readLine();//Recupera lo que env√≠o el cliente
-                    System.out.println("El navegador env√≠a: " + linea);
+                String host = "";
+                do {
+                    linea = en_navegador.readLine();//Recupera lo que envÌo el cliente
+                    System.out.println("El navegador envÌa: " + linea);
                     if  (linea.length()>7) {
      			if ((linea.substring(0, 3)).equals("GET") )
                              host = linea.substring(4, linea.length()-10);
                     }
-		}while ( !linea.equals("") );
+                }while ( !linea.equals("") );
                 
-                //Ahora se comportar√° como un cliente
+                //Ahora se comportar· como un cliente
                 try{
-                    Socket ser_privado= new Socket ("127.0.0.1",5100);// Se hace la conexi√≥n al servidor
+                    Socket ser_privado= new Socket ("127.0.0.1",5100);// Se hace la conexiÛn al servidor
                     //para enviar el server privado
                     PrintWriter sal_servidor1 = new PrintWriter(ser_privado.getOutputStream(),true);
                     //Para recuperar la respuesta del server
                     DataInputStream en_servidor1 = new DataInputStream(ser_privado.getInputStream());
-                    do {
+                    //do {
                         sal_servidor1.println(host);//Escribo al server
                         System.out.println(" El servidor privado me responde = "+en_servidor1.readUTF());            
-                    }while (!(host.trim().equals("")));
+                    //}while (!(host.trim().equals("")));
                     //sal_naegador.println(getContenidoHTML(host));
                     //sal_naegador.flush();
                     
@@ -74,12 +74,12 @@ public class ServidorWeb {
                     sal_servidor1.close();
                     en_servidor1.close();
                 } catch (IOException e) {//Error
-                    System.out.println("Error en conexi√≥n " + e);
+                    System.out.println("Error en conexiÛn " + e);
                 }
                 
                 
                 
-                cli_navegador.close();// Se cierra la conexi√≥n remota
+                cli_navegador.close();// Se cierra la conexiÛn remota
             } catch ( Exception e ) {
                 System.out.println("Error: " + e );
             }
