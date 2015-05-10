@@ -16,7 +16,31 @@ public class ServidorWeb {
 	    in.close();
 	    return contenido;
 	}
-        public static void CnxServer2 (String ip) {
+        public static void CnxServer2 (String recurso, PrintWriter salida_navegador) {
+            //Ahora se comportará como un cliente
+            try{
+                Socket ser_privado= new Socket ("127.0.0.1",5100);// Se hace la conexión al servidor
+                String cadena;
+                //para enviar el server privado
+                PrintWriter sal_servidor1 = new PrintWriter(ser_privado.getOutputStream(),true);
+                //Para recuperar la respuesta del server
+                DataInputStream en_servidor1 = new DataInputStream(ser_privado.getInputStream());
+                sal_servidor1.println(recurso);//Escribo al server
+                while (!(cadena = en_servidor1.readUTF()).equals(null)){ //imprimir respuesta del servidor
+          		  System.out.println(" El servidor privado me responde = "+cadena);
+          		  salida_navegador.println(cadena);
+          		  salida_navegador.flush();
+          	  	}
+                
+                // System.out.println(" El servidor privado me responde = "+en_servidor1.readUTF());            
+                //sal_navegador.println(getContenidoHTML(host));
+                //sal_navegador.flush();
+                ser_privado.close();//Cierro objetos
+                sal_servidor1.close();
+                en_servidor1.close();
+            } catch (IOException e) {//Error
+                System.out.println("Error en conexión " + e);
+            }
             
         }
                 
@@ -41,45 +65,25 @@ public class ServidorWeb {
                 //Lee la petición del navegador
                 BufferedReader en_navegador = new BufferedReader( new InputStreamReader(cli_navegador.getInputStream()) );
                 //Para mandarle respuesta al navegador
-                PrintWriter sal_naegador = new PrintWriter(cli_navegador.getOutputStream());
+                PrintWriter sal_navegador = new PrintWriter(cli_navegador.getOutputStream());
                 // leer los datos enviados,
                 // para de leer hasta que lee el fin de linea, es decir la linea en blanco
-                // la linea en blaco es la señal de fin de las cabeceras HTTP
+                // la línea en blanco es la señal de fin de las cabeceras HTTP
                 String linea=".";
                 String host = "";
                 do {
                     linea = en_navegador.readLine();//Recupera lo que envío el cliente
                     System.out.println("El navegador envía: " + linea);
                     if  (linea.length()>7) {
-     			if ((linea.substring(0, 3)).equals("GET") )
+                    	if ((linea.substring(0, 3)).equals("GET") ) {
                              host = linea.substring(4, linea.length()-10);
+                             CnxServer2(host, sal_navegador);
+                    	}
                     }
                 }while ( !linea.equals("") );
-                
-                //Ahora se comportará como un cliente
-                try{
-                    Socket ser_privado= new Socket ("127.0.0.1",5100);// Se hace la conexión al servidor
-                    //para enviar el server privado
-                    PrintWriter sal_servidor1 = new PrintWriter(ser_privado.getOutputStream(),true);
-                    //Para recuperar la respuesta del server
-                    DataInputStream en_servidor1 = new DataInputStream(ser_privado.getInputStream());
-                    //do {
-                        sal_servidor1.println(host);//Escribo al server
-                        System.out.println(" El servidor privado me responde = "+en_servidor1.readUTF());            
-                    //}while (!(host.trim().equals("")));
-                    //sal_naegador.println(getContenidoHTML(host));
-                    //sal_naegador.flush();
-                    
-                    ser_privado.close();//Cierro objetos
-                    sal_servidor1.close();
-                    en_servidor1.close();
-                } catch (IOException e) {//Error
-                    System.out.println("Error en conexión " + e);
-                }
-                
-                
-                
                 cli_navegador.close();// Se cierra la conexión remota
+                en_navegador.close();// Se cierra la conexión remota
+                sal_navegador.close();// Se cierra la conexión remota
             } catch ( Exception e ) {
                 System.out.println("Error: " + e );
             }
