@@ -19,7 +19,8 @@ public class ServidorWeb {
         public static void CnxServer2 (String recurso, PrintWriter salida_navegador) {
             //Ahora se comportará como un cliente
             try{
-                Socket ser_privado= new Socket ("127.0.0.1",5100);// Se hace la conexión al servidor
+                Socket ser_privado= new Socket ("148.226.81.117", 5100);// Se hace la conexión al servidor
+       		  	System.out.println(" Entro aquí");
                 String cadena;
                 //para enviar el server privado
                 PrintWriter sal_servidor1 = new PrintWriter(ser_privado.getOutputStream(),true);
@@ -31,10 +32,6 @@ public class ServidorWeb {
           		  salida_navegador.println(cadena);
           		  salida_navegador.flush();
           	  	}
-                
-                // System.out.println(" El servidor privado me responde = "+en_servidor1.readUTF());            
-                //sal_navegador.println(getContenidoHTML(host));
-                //sal_navegador.flush();
                 ser_privado.close();//Cierro objetos
                 sal_servidor1.close();
                 en_servidor1.close();
