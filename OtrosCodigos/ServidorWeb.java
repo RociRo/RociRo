@@ -19,6 +19,7 @@ public class ServidorWeb {
         public static void CnxServer2 (String recurso, PrintWriter salida_navegador) {
             //Ahora se comportará como un cliente
             try{
+            	System.out.println(" Antes del nuevo socket");
                 Socket ser_privado= new Socket ("148.226.81.117", 5100);// Se hace la conexión al servidor
        		  	System.out.println(" Entro aquí");
                 String cadena;
