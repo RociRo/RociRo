@@ -168,14 +168,12 @@ int verificaPassword(char *cadena){
     char cadena[6] ;
 	int a,b,c,d,e; 
 void creaPassword () {
-	for ( a = 49; a <= 120 ; a++)	{
-		
-		for ( b = 49; b <= 120 ; b++)	{
-			for ( c = 49; c <= 120 ; c++)	{
-				for ( d = 49; d <= 120 ; d++)	{
-					for ( e = 49; e <= 120 ; e++)	{
+	for ( a = 49; a <= 51 ; a++)	{
+			for ( c = 49; c <= 51 ; c++)	{
+				for ( d = 117; d <= 120 ; d++)	{
+					for ( e = 49; e <= 51 ; e++)	{
 						cadena[0] = a; 
-						cadena[1] = b; 
+						cadena[1] = 109; 
 						cadena[2] = c; 
 						cadena[3] = d; 
 						cadena[4] = e; 
@@ -185,22 +183,9 @@ void creaPassword () {
 							exit(-1);
 							break;
 						}
-						if (a == 51)
-							a = a + 64;
-
-						if (b == 51)
-							b = b + 64;
-						if (c == 51)
-							c = c + 64;
-						if (d == 51)
-							d = d + 64;
-						if (e == 51)
-							e = e + 64;
-				
 					}
 				}
 			}
-		}
 	}
 }
 
